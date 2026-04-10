@@ -38,7 +38,7 @@ xcodebuild -project TempBarApp.xcodeproj -scheme TempBarApp -configuration Relea
 ## 系统要求
 
 - macOS 13.0 (Ventura) 或更高版本
-- Apple Silicon 或 Intel Mac
+- Apple Silicon 
 
 ## 致谢
 
