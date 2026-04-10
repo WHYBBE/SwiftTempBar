@@ -8,7 +8,7 @@ macOS 菜单栏温度监控工具，适用于 Apple Silicon Mac。
 - 点击查看 CPU / GPU 详细温度信息
 - 显示热压力状态
 - 每 5 秒自动刷新
-- Universal Binary（支持 x86_64 + arm64）
+- Universal Binary（支持 arm64）
 
 ## 截图
 
