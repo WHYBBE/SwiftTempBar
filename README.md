@@ -44,6 +44,10 @@ xcodebuild -project TempBarApp.xcodeproj -scheme TempBarApp -configuration Relea
 
 温度传感器读取代码基于 [macos-temp-tool](https://github.com/Cliffback/macos-temp-tool)，原始代码来自 [freedomtan/sensors](https://github.com/freedomtan/sensors)。
 
+## 友情链接
+
+[Linux do](https://linux.do))。
+
 ## 许可证
 
 BSD 3-Clause License
