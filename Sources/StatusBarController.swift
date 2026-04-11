@@ -12,9 +12,9 @@ final class StatusBarController: NSObject, NSApplicationDelegate {
 
     private static func colorForTemp(_ temp: Double) -> NSColor {
         switch temp {
-        case ..<35: return NSColor(red: 0.2, green: 0.5, blue: 1.0, alpha: 1)
-        case 35...45: return NSColor(red: 0.2, green: 0.8, blue: 0.3, alpha: 1)
-        case 46...55: return NSColor(red: 1.0, green: 0.6, blue: 0.0, alpha: 1)
+        case ..<35.0: return NSColor(red: 0.2, green: 0.5, blue: 1.0, alpha: 1)
+        case 35.0..<46.0: return NSColor(red: 0.2, green: 0.8, blue: 0.3, alpha: 1)
+        case 46.0..<56.0: return NSColor(red: 1.0, green: 0.6, blue: 0.0, alpha: 1)
         default: return NSColor(red: 1.0, green: 0.25, blue: 0.2, alpha: 1)
         }
     }
