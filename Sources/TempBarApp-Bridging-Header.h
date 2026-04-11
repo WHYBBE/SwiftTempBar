@@ -1,1 +1,0 @@
-#import "TemperatureReader.h"

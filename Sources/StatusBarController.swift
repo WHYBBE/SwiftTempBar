@@ -1,88 +1,104 @@
 import AppKit
 
-final class StatusBarController: NSObject {
-    private let statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
+@main
+final class StatusBarController: NSObject, NSApplicationDelegate {
+    private var statusItem: NSStatusItem!
     private let reader = TemperatureReader()
     private var timer: Timer?
-    private var lastTitle: String?
+    private var interval: TimeInterval = 2
+    private var displayMode: DisplayMode = .cpu
 
-    func start() {
-        if let button = statusItem.button {
-            button.title = "--°"
-            button.font = NSFont.monospacedDigitSystemFont(ofSize: 12, weight: .medium)
-        }
+    func applicationDidFinishLaunching(_ notification: Notification) {
+        NSApp.setActivationPolicy(.accessory)
+        statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
+        statusItem.button?.title = "--°"
+        statusItem.button?.font = NSFont.monospacedDigitSystemFont(ofSize: 14, weight: .regular)
         refresh()
-        timer = Timer.scheduledTimer(withTimeInterval: 5, repeats: true) { [weak self] _ in
+        rebuildMenu()
+        scheduleTimer()
+    }
+
+    private func scheduleTimer() {
+        timer?.invalidate()
+        timer = Timer.scheduledTimer(withTimeInterval: interval, repeats: true) { [weak self] _ in
             self?.refresh()
         }
-        RunLoop.main.add(timer!, forMode: .common)
+        if let timer { RunLoop.main.add(timer, forMode: .common) }
     }
 
     private func refresh() {
-        let snapshot = reader.readSnapshot()
-        let title = TemperatureModel.menuBarText(snapshot: snapshot)
-        if title != lastTitle {
-            statusItem.button?.title = title
-            lastTitle = title
-        }
-        rebuildMenu(snapshot: snapshot)
+        let temp = reader.readTemperature(mode: displayMode)
+        statusItem.button?.title = temp.map { String(format: "%.0f°", $0) } ?? "--°"
     }
 
-    /// Create a menu item with black text
-    private func blackItem(_ title: String) -> NSMenuItem {
+    private func labelItem(_ title: String) -> NSMenuItem {
         let item = NSMenuItem()
-        item.attributedTitle = NSAttributedString(
-            string: title,
-            attributes: [.foregroundColor: NSColor.black]
-        )
+        item.attributedTitle = NSAttributedString(string: title, attributes: [.foregroundColor: NSColor.black])
         return item
     }
 
-    private func rebuildMenu(snapshot: TemperatureSnapshot) {
+    private func checkItem(_ title: String, on: Bool, action: Selector, represented: Any? = nil) -> NSMenuItem {
+        let item = NSMenuItem(title: title, action: action, keyEquivalent: "")
+        item.target = self
+        item.state = on ? .on : .off
+        item.attributedTitle = NSAttributedString(string: title, attributes: [.foregroundColor: NSColor.black])
+        if let represented { item.representedObject = represented }
+        return item
+    }
+
+    private func rebuildMenu() {
         let menu = NSMenu()
         menu.autoenablesItems = false
 
-        if let cpu = TemperatureModel.hottest(from: snapshot.cpuReadings) {
-            menu.addItem(blackItem(String(format: "CPU 最高温度: %.1f°", cpu.value)))
-            menu.addItem(blackItem("  传感器: \(cpu.sensorName)"))
-        } else {
-            menu.addItem(blackItem("CPU 最高温度: 不可用"))
-        }
-
-        if let cpuAverage = TemperatureModel.average(from: snapshot.cpuReadings) {
-            menu.addItem(blackItem(String(format: "CPU 平均温度: %.1f°", cpuAverage)))
-        }
-
+        menu.addItem(checkItem("CPU", on: displayMode == .cpu, action: #selector(switchMode(_:)), represented: "cpu"))
+        menu.addItem(checkItem("GPU", on: displayMode == .gpu, action: #selector(switchMode(_:)), represented: "gpu"))
         menu.addItem(.separator())
 
-        if let gpu = TemperatureModel.hottest(from: snapshot.gpuReadings) {
-            menu.addItem(blackItem(String(format: "GPU 最高温度: %.1f°", gpu.value)))
-            menu.addItem(blackItem("  传感器: \(gpu.sensorName)"))
-        } else {
-            menu.addItem(blackItem("GPU 最高温度: 不可用"))
+        for s in [1, 2, 3, 5, 10, 30] as [TimeInterval] {
+            menu.addItem(checkItem(String(format: "%.0f 秒", s), on: interval == s, action: #selector(setInterval(_:)), represented: NSNumber(value: s)))
         }
 
-        if let gpuAverage = TemperatureModel.average(from: snapshot.gpuReadings) {
-            menu.addItem(blackItem(String(format: "GPU 平均温度: %.1f°", gpuAverage)))
-        }
-
-        menu.addItem(.separator())
-        menu.addItem(blackItem("热压力: \(snapshot.thermalPressure)"))
-        menu.addItem(blackItem("更新时间: \(TemperatureModel.timestampText(snapshot.timestamp))"))
+        let dec = labelItem("-1 秒"); dec.target = self; dec.action = #selector(decreaseInterval); menu.addItem(dec)
+        let inc = labelItem("+1 秒"); inc.target = self; inc.action = #selector(increaseInterval); menu.addItem(inc)
         menu.addItem(.separator())
 
-        let quitItem = NSMenuItem(title: "退出", action: #selector(quit), keyEquivalent: "q")
-        quitItem.target = self
-        quitItem.attributedTitle = NSAttributedString(
-            string: "退出",
-            attributes: [.foregroundColor: NSColor.black]
-        )
-        menu.addItem(quitItem)
+        let quit = NSMenuItem(title: "退出", action: #selector(NSApplication.terminate(_:)), keyEquivalent: "q")
+        quit.attributedTitle = NSAttributedString(string: "退出", attributes: [.foregroundColor: NSColor.black])
+        menu.addItem(quit)
 
         statusItem.menu = menu
     }
 
-    @objc private func quit() {
-        NSApp.terminate(nil)
+    @objc private func switchMode(_ sender: NSMenuItem) {
+        guard let v = sender.representedObject as? String else { return }
+        if v == "cpu" { displayMode = .cpu } else { displayMode = .gpu }
+        refresh()
+        rebuildMenu()
+    }
+
+    @objc private func setInterval(_ sender: NSMenuItem) {
+        guard let v = sender.representedObject as? NSNumber else { return }
+        interval = v.doubleValue
+        scheduleTimer()
+        rebuildMenu()
+    }
+
+    @objc private func decreaseInterval() {
+        interval = max(1, interval - 1)
+        scheduleTimer()
+        rebuildMenu()
+    }
+
+    @objc private func increaseInterval() {
+        interval += 1
+        scheduleTimer()
+        rebuildMenu()
+    }
+
+    static func main() {
+        let app = NSApplication.shared
+        let delegate = StatusBarController()
+        app.delegate = delegate
+        app.run()
     }
 }

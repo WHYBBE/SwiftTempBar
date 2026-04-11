@@ -7,25 +7,16 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-	006000000000000000000000 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 004000000000000000000000 /* AppDelegate.swift */; };
 	006000000000000000000001 /* StatusBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 004000000000000000000001 /* StatusBarController.swift */; };
-	006000000000000000000002 /* TemperatureModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 004000000000000000000002 /* TemperatureModel.swift */; };
-	006000000000000000000003 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 004000000000000000000003 /* main.swift */; };
-	006000000000000000000004 /* TemperatureReader.m in Sources */ = {isa = PBXBuildFile; fileRef = 004000000000000000000005 /* TemperatureReader.m */; };
 	006000000000000000000005 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00400000000000000000000A /* Cocoa.framework */; };
 	006000000000000000000006 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00400000000000000000000B /* IOKit.framework */; };
+	006000000000000000000007 /* TemperatureReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00400000000000000000000C /* TemperatureReader.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-	004000000000000000000000 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 	004000000000000000000001 /* StatusBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusBarController.swift; sourceTree = "<group>"; };
-	004000000000000000000002 /* TemperatureModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemperatureModel.swift; sourceTree = "<group>"; };
-	004000000000000000000003 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
-	004000000000000000000004 /* TemperatureReader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TemperatureReader.h; sourceTree = "<group>"; };
-	004000000000000000000005 /* TemperatureReader.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TemperatureReader.m; sourceTree = "<group>"; };
-	004000000000000000000006 /* TempBarApp-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "TempBarApp-Bridging-Header.h"; sourceTree = "<group>"; };
 	004000000000000000000007 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-	004000000000000000000008 /* TempBarApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TempBarApp.entitlements; sourceTree = "<group>"; };
+	00400000000000000000000C /* TemperatureReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemperatureReader.swift; sourceTree = "<group>"; };
 	004000000000000000000009 /* TempBarApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; path = TempBarApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 	00400000000000000000000A /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 	00400000000000000000000B /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
@@ -64,15 +55,9 @@
 	003000000000000000000002 /* Sources */ = {
 		isa = PBXGroup;
 		children = (
-			004000000000000000000000 /* AppDelegate.swift */,
 			004000000000000000000001 /* StatusBarController.swift */,
-			004000000000000000000002 /* TemperatureModel.swift */,
-			004000000000000000000003 /* main.swift */,
-			004000000000000000000004 /* TemperatureReader.h */,
-			004000000000000000000005 /* TemperatureReader.m */,
-			004000000000000000000006 /* TempBarApp-Bridging-Header.h */,
+			00400000000000000000000C /* TemperatureReader.swift */,
 			004000000000000000000007 /* Info.plist */,
-			004000000000000000000008 /* TempBarApp.entitlements */,
 		);
 		path = Sources;
 		sourceTree = "<group>";
@@ -144,11 +129,8 @@
 		isa = PBXSourcesBuildPhase;
 		buildActionMask = 2147483647;
 		files = (
-			006000000000000000000000 /* AppDelegate.swift in Sources */,
 			006000000000000000000001 /* StatusBarController.swift in Sources */,
-			006000000000000000000002 /* TemperatureModel.swift in Sources */,
-			006000000000000000000003 /* main.swift in Sources */,
-			006000000000000000000004 /* TemperatureReader.m in Sources */,
+			006000000000000000000007 /* TemperatureReader.swift in Sources */,
 		);
 		runOnlyForDeploymentPostprocessing = 0;
 	};
@@ -271,7 +253,6 @@
 	002000000000000000000001 /* Debug */ = {
 		isa = XCBuildConfiguration;
 		buildSettings = {
-			CODE_SIGN_ENTITLEMENTS = Sources/TempBarApp.entitlements;
 			CODE_SIGN_IDENTITY = "-";
 			CODE_SIGN_STYLE = Automatic;
 			COMBINE_HIDPI_IMAGES = YES;
@@ -288,7 +269,6 @@
 			PRODUCT_BUNDLE_IDENTIFIER = "local.TempBarApp";
 			PRODUCT_NAME = "$(TARGET_NAME)";
 			SWIFT_EMIT_LOC_STRINGS = YES;
-			SWIFT_OBJC_BRIDGING_HEADER = "Sources/TempBarApp-Bridging-Header.h";
 			SWIFT_VERSION = 5.0;
 		};
 		name = Debug;
@@ -296,7 +276,6 @@
 	002000000000000000000002 /* Release */ = {
 		isa = XCBuildConfiguration;
 		buildSettings = {
-			CODE_SIGN_ENTITLEMENTS = Sources/TempBarApp.entitlements;
 			CODE_SIGN_IDENTITY = "-";
 			CODE_SIGN_STYLE = Automatic;
 			COMBINE_HIDPI_IMAGES = YES;
@@ -313,7 +292,6 @@
 			PRODUCT_BUNDLE_IDENTIFIER = "local.TempBarApp";
 			PRODUCT_NAME = "$(TARGET_NAME)";
 			SWIFT_EMIT_LOC_STRINGS = YES;
-			SWIFT_OBJC_BRIDGING_HEADER = "Sources/TempBarApp-Bridging-Header.h";
 			SWIFT_VERSION = 5.0;
 		};
 		name = Release;
