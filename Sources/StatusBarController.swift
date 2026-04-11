@@ -1,4 +1,5 @@
 import AppKit
+import ServiceManagement
 
 @main
 final class StatusBarController: NSObject, NSApplicationDelegate {
@@ -86,6 +87,7 @@ final class StatusBarController: NSObject, NSApplicationDelegate {
         let dec = labelItem("-1 秒"); dec.target = self; dec.action = #selector(decreaseInterval); menu.addItem(dec)
         let inc = labelItem("+1 秒"); inc.target = self; inc.action = #selector(increaseInterval); menu.addItem(inc)
         menu.addItem(checkItem("彩色模式", on: colorMode, action: #selector(toggleColorMode)))
+        menu.addItem(checkItem("开机自启", on: Self.isLoginItemEnabled, action: #selector(toggleLoginItem)))
         menu.addItem(.separator())
 
         let quit = NSMenuItem(title: "退出", action: #selector(NSApplication.terminate(_:)), keyEquivalent: "q")
@@ -99,6 +101,20 @@ final class StatusBarController: NSObject, NSApplicationDelegate {
         colorMode.toggle()
         refresh()
         rebuildMenu()
+    }
+
+    @objc private func toggleLoginItem() {
+        let enable = !Self.isLoginItemEnabled
+        if enable {
+            try? SMAppService.mainApp.register()
+        } else {
+            try? SMAppService.mainApp.unregister()
+        }
+        rebuildMenu()
+    }
+
+    private static var isLoginItemEnabled: Bool {
+        SMAppService.mainApp.status == .enabled
     }
 
     @objc private func switchMode(_ sender: NSMenuItem) {
