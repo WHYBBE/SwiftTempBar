@@ -7,6 +7,16 @@ final class StatusBarController: NSObject, NSApplicationDelegate {
     private var timer: Timer?
     private var interval: TimeInterval = 2
     private var displayMode: DisplayMode = .cpu
+    private var colorMode = false
+
+    private static func colorForTemp(_ temp: Double) -> NSColor {
+        switch temp {
+        case ..<35: return NSColor(red: 0.2, green: 0.5, blue: 1.0, alpha: 1)
+        case 35...45: return NSColor(red: 0.2, green: 0.8, blue: 0.3, alpha: 1)
+        case 46...55: return NSColor(red: 1.0, green: 0.6, blue: 0.0, alpha: 1)
+        default: return NSColor(red: 1.0, green: 0.25, blue: 0.2, alpha: 1)
+        }
+    }
 
     func applicationDidFinishLaunching(_ notification: Notification) {
         NSApp.setActivationPolicy(.accessory)
@@ -28,7 +38,22 @@ final class StatusBarController: NSObject, NSApplicationDelegate {
 
     private func refresh() {
         let temp = reader.readTemperature(mode: displayMode)
-        statusItem.button?.title = temp.map { String(format: "%.0f°", $0) } ?? "--°"
+        guard let t = temp else {
+            statusItem.button?.title = "--°"
+            return
+        }
+        let text = String(format: "%.0f°", t)
+        if colorMode {
+            statusItem.button?.attributedTitle = NSAttributedString(
+                string: text,
+                attributes: [
+                    .font: NSFont.monospacedDigitSystemFont(ofSize: 14, weight: .regular),
+                    .foregroundColor: Self.colorForTemp(t)
+                ]
+            )
+        } else {
+            statusItem.button?.title = text
+        }
     }
 
     private func labelItem(_ title: String) -> NSMenuItem {
@@ -60,6 +85,7 @@ final class StatusBarController: NSObject, NSApplicationDelegate {
 
         let dec = labelItem("-1 秒"); dec.target = self; dec.action = #selector(decreaseInterval); menu.addItem(dec)
         let inc = labelItem("+1 秒"); inc.target = self; inc.action = #selector(increaseInterval); menu.addItem(inc)
+        menu.addItem(checkItem("彩色模式", on: colorMode, action: #selector(toggleColorMode)))
         menu.addItem(.separator())
 
         let quit = NSMenuItem(title: "退出", action: #selector(NSApplication.terminate(_:)), keyEquivalent: "q")
@@ -67,6 +93,12 @@ final class StatusBarController: NSObject, NSApplicationDelegate {
         menu.addItem(quit)
 
         statusItem.menu = menu
+    }
+
+    @objc private func toggleColorMode() {
+        colorMode.toggle()
+        refresh()
+        rebuildMenu()
     }
 
     @objc private func switchMode(_ sender: NSMenuItem) {
