@@ -6,9 +6,24 @@ final class StatusBarController: NSObject, NSApplicationDelegate {
     private var statusItem: NSStatusItem!
     private let reader = TemperatureReader()
     private var timer: Timer?
-    private var interval: TimeInterval = 2
-    private var displayMode: DisplayMode = .cpu
-    private var colorMode = false
+    private var interval: TimeInterval {
+        didSet { UserDefaults.standard.set(interval, forKey: "interval") }
+    }
+    private var displayMode: DisplayMode {
+        didSet { UserDefaults.standard.set(displayMode == .gpu ? "gpu" : "cpu", forKey: "displayMode") }
+    }
+    private var colorMode: Bool {
+        didSet { UserDefaults.standard.set(colorMode, forKey: "colorMode") }
+    }
+
+    override init() {
+        let ud = UserDefaults.standard
+        let saved = ud.double(forKey: "interval")
+        self.interval = saved > 0 ? saved : 2
+        self.displayMode = ud.string(forKey: "displayMode") == "gpu" ? .gpu : .cpu
+        self.colorMode = ud.bool(forKey: "colorMode")
+        super.init()
+    }
 
     private static func colorForTemp(_ temp: Double) -> NSColor {
         switch temp {
