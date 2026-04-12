@@ -19,7 +19,7 @@
 	004000000000000000000007 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 	00400000000000000000000C /* TemperatureReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemperatureReader.swift; sourceTree = "<group>"; };
 	00400000000000000000000D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-	004000000000000000000009 /* TempBarApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; path = TempBarApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
+	004000000000000000000009 /* SwiftTempBar.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; path = SwiftTempBar.app; sourceTree = BUILT_PRODUCTS_DIR; };
 	00400000000000000000000A /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 	00400000000000000000000B /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
@@ -49,7 +49,7 @@
 	003000000000000000000001 /* Products */ = {
 		isa = PBXGroup;
 		children = (
-			004000000000000000000009 /* TempBarApp.app */,
+			004000000000000000000009 /* SwiftTempBar.app */,
 		);
 		name = Products;
 		sourceTree = "<group>";
@@ -77,9 +77,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-	002000000000000000000000 /* TempBarApp */ = {
+	002000000000000000000000 /* SwiftTempBar */ = {
 		isa = PBXNativeTarget;
-		buildConfigurationList = 002000000000000000000003 /* Build configuration list for PBXNativeTarget "TempBarApp" */;
+		buildConfigurationList = 002000000000000000000003 /* Build configuration list for PBXNativeTarget "SwiftTempBar" */;
 		buildPhases = (
 			005000000000000000000000 /* Sources */,
 			005000000000000000000001 /* Frameworks */,
@@ -89,9 +89,9 @@
 		);
 		dependencies = (
 		);
-		name = TempBarApp;
-		productName = TempBarApp;
-		productReference = 004000000000000000000009 /* TempBarApp.app */;
+		name = SwiftTempBar;
+		productName = SwiftTempBar;
+		productReference = 004000000000000000000009 /* SwiftTempBar.app */;
 		productType = "com.apple.product-type.application";
 	};
 /* End PBXNativeTarget section */
@@ -99,7 +99,7 @@
 /* Begin PBXProject section */
 	001000000000000000000000 /* Project object */ = {
 		isa = PBXProject;
-		buildConfigurationList = 001000000000000000000003 /* Build configuration list for PBXProject "TempBarApp" */;
+		buildConfigurationList = 001000000000000000000003 /* Build configuration list for PBXProject "SwiftTempBar" */;
 		compatibilityVersion = "Xcode 15.0";
 		developmentRegion = en;
 		hasScannedForEncodings = 0;
@@ -112,7 +112,7 @@
 		projectDirPath = "";
 		projectRoot = "";
 		targets = (
-			002000000000000000000000 /* TempBarApp */,
+			002000000000000000000000 /* SwiftTempBar */,
 		);
 	};
 /* End PBXProject section */
@@ -271,7 +271,7 @@
 			);
 			MACOSX_DEPLOYMENT_TARGET = 13.0;
 			MARKETING_VERSION = 1.0;
-			PRODUCT_BUNDLE_IDENTIFIER = "local.TempBarApp";
+			PRODUCT_BUNDLE_IDENTIFIER = "local.SwiftTempBar";
 			PRODUCT_NAME = "$(TARGET_NAME)";
 			SWIFT_EMIT_LOC_STRINGS = YES;
 			SWIFT_VERSION = 5.0;
@@ -295,7 +295,7 @@
 			);
 			MACOSX_DEPLOYMENT_TARGET = 13.0;
 			MARKETING_VERSION = 1.0;
-			PRODUCT_BUNDLE_IDENTIFIER = "local.TempBarApp";
+			PRODUCT_BUNDLE_IDENTIFIER = "local.SwiftTempBar";
 			PRODUCT_NAME = "$(TARGET_NAME)";
 			SWIFT_EMIT_LOC_STRINGS = YES;
 			SWIFT_VERSION = 5.0;
@@ -305,7 +305,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-	001000000000000000000003 /* Build configuration list for PBXProject "TempBarApp" */ = {
+	001000000000000000000003 /* Build configuration list for PBXProject "SwiftTempBar" */ = {
 		isa = XCConfigurationList;
 		buildConfigurations = (
 			001000000000000000000001 /* Debug */,
@@ -314,7 +314,7 @@
 		defaultConfigurationIsVisible = 0;
 		defaultConfigurationName = Release;
 	};
-	002000000000000000000003 /* Build configuration list for PBXNativeTarget "TempBarApp" */ = {
+	002000000000000000000003 /* Build configuration list for PBXNativeTarget "SwiftTempBar" */ = {
 		isa = XCConfigurationList;
 		buildConfigurations = (
 			002000000000000000000001 /* Debug */,

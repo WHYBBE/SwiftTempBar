@@ -1,4 +1,4 @@
-# TempBar
+# SwiftTempBar
 
 Built with GLM-5.1 (OpenCode) Vibe Coding.
 
@@ -57,7 +57,7 @@ Only 2 Swift source files. No Storyboards, no ObjC, no dependencies.
 ## Building
 
 ```bash
-xcodebuild -project TempBarApp.xcodeproj -scheme TempBarApp -configuration Release build
+xcodebuild -project SwiftTempBar.xcodeproj -scheme SwiftTempBar -configuration Release build
 ```
 
 ## Acknowledgements

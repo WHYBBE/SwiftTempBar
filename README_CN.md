@@ -1,4 +1,4 @@
-# TempBar
+# SwiftTempBar
 
 由 GLM-5.1 (OpenCode) Vibe Coding 而成。
 
@@ -55,7 +55,7 @@ Sources/
 ## 构建
 
 ```bash
-xcodebuild -project TempBarApp.xcodeproj -scheme TempBarApp -configuration Release build
+xcodebuild -project SwiftTempBar.xcodeproj -scheme SwiftTempBar -configuration Release build
 ```
 
 ## 致谢

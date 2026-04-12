@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "002000000000000000000000"
-               BuildableName = "TempBarApp.app"
-               BlueprintName = "TempBarApp"
-               ReferencedContainer = "container:TempBarApp.xcodeproj">
+               BuildableName = "SwiftTempBar.app"
+               BlueprintName = "SwiftTempBar"
+               ReferencedContainer = "container:SwiftTempBar.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -44,9 +44,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "002000000000000000000000"
-            BuildableName = "TempBarApp.app"
-            BlueprintName = "TempBarApp"
-            ReferencedContainer = "container:TempBarApp.xcodeproj">
+            BuildableName = "SwiftTempBar.app"
+            BlueprintName = "SwiftTempBar"
+            ReferencedContainer = "container:SwiftTempBar.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
