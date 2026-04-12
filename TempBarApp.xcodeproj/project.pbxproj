@@ -11,12 +11,14 @@
 	006000000000000000000005 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00400000000000000000000A /* Cocoa.framework */; };
 	006000000000000000000006 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00400000000000000000000B /* IOKit.framework */; };
 	006000000000000000000007 /* TemperatureReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00400000000000000000000C /* TemperatureReader.swift */; };
+	006000000000000000000008 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 00400000000000000000000D /* Assets.xcassets */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 	004000000000000000000001 /* StatusBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusBarController.swift; sourceTree = "<group>"; };
 	004000000000000000000007 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 	00400000000000000000000C /* TemperatureReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemperatureReader.swift; sourceTree = "<group>"; };
+	00400000000000000000000D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 	004000000000000000000009 /* TempBarApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; path = TempBarApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 	00400000000000000000000A /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 	00400000000000000000000B /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
@@ -58,6 +60,7 @@
 			004000000000000000000001 /* StatusBarController.swift */,
 			00400000000000000000000C /* TemperatureReader.swift */,
 			004000000000000000000007 /* Info.plist */,
+			00400000000000000000000D /* Assets.xcassets */,
 		);
 		path = Sources;
 		sourceTree = "<group>";
@@ -119,6 +122,7 @@
 		isa = PBXResourcesBuildPhase;
 		buildActionMask = 2147483647;
 		files = (
+			006000000000000000000008 /* Assets.xcassets in Resources */,
 		);
 		runOnlyForDeploymentPostprocessing = 0;
 	};
@@ -253,6 +257,7 @@
 	002000000000000000000001 /* Debug */ = {
 		isa = XCBuildConfiguration;
 		buildSettings = {
+			ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 			CODE_SIGN_IDENTITY = "-";
 			CODE_SIGN_STYLE = Automatic;
 			COMBINE_HIDPI_IMAGES = YES;
@@ -276,6 +281,7 @@
 	002000000000000000000002 /* Release */ = {
 		isa = XCBuildConfiguration;
 		buildSettings = {
+			ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 			CODE_SIGN_IDENTITY = "-";
 			CODE_SIGN_STYLE = Automatic;
 			COMBINE_HIDPI_IMAGES = YES;
