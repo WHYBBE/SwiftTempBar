@@ -4,6 +4,8 @@
 
 一个轻量级的 macOS 菜单栏温度监控工具，专为 Apple Silicon（M 系列芯片）设计。
 
+![预览](docs/temp_app_preview.png)
+
 ## 功能特性
 
 - 菜单栏实时显示 CPU / GPU 温度

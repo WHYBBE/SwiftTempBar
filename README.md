@@ -6,6 +6,8 @@ Built with GLM-5.1 (OpenCode) Vibe Coding.
 
 A lightweight macOS menu bar temperature monitor for Apple Silicon (M-series chips).
 
+![Preview](docs/temp_app_preview.png)
+
 ## Features
 
 - Real-time CPU / GPU temperature display in the menu bar
