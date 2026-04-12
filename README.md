@@ -1,53 +1,73 @@
-# TempBarApp
+# TempBar
 
-macOS 菜单栏温度监控工具，适用于 Apple Silicon Mac。
+Built with GLM-5.1 (OpenCode) Vibe Coding.
 
-## 功能
+[中文文档](README_CN.md)
 
-- 菜单栏实时显示 CPU 最高温度
-- 点击查看 CPU / GPU 详细温度信息
-- 显示热压力状态
-- 每 5 秒自动刷新
-- Universal Binary（支持 arm64）
+A lightweight macOS menu bar temperature monitor for Apple Silicon (M-series chips).
 
-## 截图
+## Features
 
-菜单栏会显示当前 CPU 最高温度，点击展开查看详情：
+- Real-time CPU / GPU temperature display in the menu bar
+- Switchable CPU and GPU mode
+- Color-coded temperature display (optional):
+  - Blue: < 35°C (Low)
+  - Green: 35–45°C (Normal)
+  - Orange: 46–55°C (High)
+  - Red: ≥ 56°C (Overheating)
+- Configurable refresh interval with presets (1s / 2s / 3s / 5s / 10s / 30s) and fine-tuning (±1s)
+- Settings persistence across restarts
+- Launch at login option
+- No Dock icon — lives entirely in the menu bar
 
-- CPU 最高温度 / 平均温度
-- GPU 最高温度 / 平均温度
-- 热压力状态
-- 更新时间
+## Requirements
 
-## 安装
+- macOS 13.0 (Ventura) or later
+- Apple Silicon Mac (M1 / M2 / M3 / M4 series)
 
-### 方式一：直接下载
+## How It Works
 
-从 [Releases](../../releases) 下载 `TempBarApp.app`，拖入 `/Applications` 即可使用。
+TempBar reads hardware temperature sensors through macOS private IOKit/HID APIs:
 
-### 方式二：从源码编译
+1. **IOHIDEventSystemClientCreate** — creates a HID system client
+2. **IOHIDEventSystemClientSetMatching** — filters devices by `UsagePage=0xFF00, Usage=5` (temperature sensors)
+3. **IOHIDEventSystemClientCopyServices** — enumerates all matching sensor services
+4. **IOHIDServiceClientCopyProperty** — reads each sensor's name ("Product")
+5. **IOHIDServiceClientCopyEvent** — retrieves a temperature event (`kIOHIDEventTypeTemperature = 15`)
+6. **IOHIDEventGetFloatValue** — extracts the temperature value
 
-需要 Xcode 15+。
+Sensors are classified by name prefix:
+- **CPU**: `PMU tdie`, `PMU tdev`, `pACC MTR Temp`, `eACC MTR Temp`, etc.
+- **GPU**: `GPU MTR Temp Sensor`, `PMU2 tdie`, `PMU2 tdev`, etc.
 
-```bash
-git clone https://github.com/SolitaryJune/TempBarApp.git
-cd TempBarApp
-xcodebuild -project TempBarApp.xcodeproj -scheme TempBarApp -configuration Release
+The private APIs are loaded at runtime via `dlopen`/`dlsym` — no bridging headers or ObjC needed.
+
+## Project Structure
+
+```
+Sources/
+├── StatusBarController.swift   # App entry (@main), menu bar UI, settings
+├── TemperatureReader.swift     # HID sensor reading (pure Swift)
+├── Assets.xcassets/            # App icon
+└── Info.plist
 ```
 
-## 系统要求
+Only 2 Swift source files. No Storyboards, no ObjC, no dependencies.
 
-- macOS 13.0 (Ventura) 或更高版本
-- Apple Silicon 
+## Building
 
-## 致谢
+```bash
+xcodebuild -project TempBarApp.xcodeproj -scheme TempBarApp -configuration Release build
+```
 
-温度传感器读取代码基于 [macos-temp-tool](https://github.com/Cliffback/macos-temp-tool)，原始代码来自 [freedomtan/sensors](https://github.com/freedomtan/sensors)。
+## Acknowledgements
 
-## 友情链接
+This project was inspired by and derived from:
 
-[Linux do](https://linux.do))。
+- [SolitaryJune/TempBarApp](https://github.com/SolitaryJune/TempBarApp) (BSD-3)
+- [Cliffback/macos-temp-tool](https://github.com/Cliffback/macos-temp-tool) (BSD-3)
+- [freedomtan/sensors](https://github.com/freedomtan/sensors) (BSD-3)
 
-## 许可证
+## License
 
-BSD 3-Clause License
+See [LICENSE](LICENSE).
