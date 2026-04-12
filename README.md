@@ -18,6 +18,7 @@ A lightweight macOS menu bar temperature monitor for Apple Silicon (M-series chi
 - Configurable refresh interval with presets (1s / 2s / 3s / 5s / 10s / 30s) and fine-tuning (±1s)
 - Settings persistence across restarts
 - Launch at login option
+- English / Chinese menu language switch (defaults to English)
 - No Dock icon — lives entirely in the menu bar
 
 ## Requirements
@@ -27,7 +28,7 @@ A lightweight macOS menu bar temperature monitor for Apple Silicon (M-series chi
 
 ## How It Works
 
-TempBar reads hardware temperature sensors through macOS private IOKit/HID APIs:
+SwiftTempBar reads hardware temperature sensors through macOS private IOKit/HID APIs:
 
 1. **IOHIDEventSystemClientCreate** — creates a HID system client
 2. **IOHIDEventSystemClientSetMatching** — filters devices by `UsagePage=0xFF00, Usage=5` (temperature sensors)

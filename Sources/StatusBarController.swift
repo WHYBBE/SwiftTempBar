@@ -15,6 +15,9 @@ final class StatusBarController: NSObject, NSApplicationDelegate {
     private var colorMode: Bool {
         didSet { UserDefaults.standard.set(colorMode, forKey: "colorMode") }
     }
+    private var lang: String {
+        didSet { UserDefaults.standard.set(lang, forKey: "lang") }
+    }
 
     override init() {
         let ud = UserDefaults.standard
@@ -22,7 +25,24 @@ final class StatusBarController: NSObject, NSApplicationDelegate {
         self.interval = saved > 0 ? saved : 2
         self.displayMode = ud.string(forKey: "displayMode") == "gpu" ? .gpu : .cpu
         self.colorMode = ud.bool(forKey: "colorMode")
+        self.lang = ud.string(forKey: "lang") ?? "en"
         super.init()
+    }
+
+    private enum L {
+        static func sec(_ n: Double, _ lang: String) -> String {
+            String(format: lang == "zh" ? "%.0f 秒" : "%.0f sec", n)
+        }
+        private static let zh: [String: String] = [
+            "Color Mode": "彩色模式",
+            "Launch at Login": "开机自启",
+            "Quit": "退出",
+            "-1 sec": "-1 秒",
+            "+1 sec": "+1 秒",
+        ]
+        static func t(_ key: String, _ lang: String) -> String {
+            lang == "zh" ? (zh[key] ?? key) : key
+        }
     }
 
     private static func colorForTemp(_ temp: Double) -> NSColor {
@@ -96,20 +116,33 @@ final class StatusBarController: NSObject, NSApplicationDelegate {
         menu.addItem(.separator())
 
         for s in [1, 2, 3, 5, 10, 30] as [TimeInterval] {
-            menu.addItem(checkItem(String(format: "%.0f 秒", s), on: interval == s, action: #selector(setInterval(_:)), represented: NSNumber(value: s)))
+            menu.addItem(checkItem(L.sec(s, lang), on: interval == s, action: #selector(setInterval(_:)), represented: NSNumber(value: s)))
         }
 
-        let dec = labelItem("-1 秒"); dec.target = self; dec.action = #selector(decreaseInterval); menu.addItem(dec)
-        let inc = labelItem("+1 秒"); inc.target = self; inc.action = #selector(increaseInterval); menu.addItem(inc)
-        menu.addItem(checkItem("彩色模式", on: colorMode, action: #selector(toggleColorMode)))
-        menu.addItem(checkItem("开机自启", on: Self.isLoginItemEnabled, action: #selector(toggleLoginItem)))
+        let dec = labelItem(L.t("-1 sec", lang)); dec.target = self; dec.action = #selector(decreaseInterval); menu.addItem(dec)
+        let inc = labelItem(L.t("+1 sec", lang)); inc.target = self; inc.action = #selector(increaseInterval); menu.addItem(inc)
         menu.addItem(.separator())
 
-        let quit = NSMenuItem(title: "退出", action: #selector(NSApplication.terminate(_:)), keyEquivalent: "q")
-        quit.attributedTitle = NSAttributedString(string: "退出", attributes: [.foregroundColor: NSColor.black])
+        menu.addItem(checkItem(L.t("Color Mode", lang), on: colorMode, action: #selector(toggleColorMode)))
+        menu.addItem(checkItem(L.t("Launch at Login", lang), on: Self.isLoginItemEnabled, action: #selector(toggleLoginItem)))
+        menu.addItem(.separator())
+
+        menu.addItem(checkItem("English", on: lang == "en", action: #selector(switchLang(_:)), represented: "en"))
+        menu.addItem(checkItem("中文", on: lang == "zh", action: #selector(switchLang(_:)), represented: "zh"))
+        menu.addItem(.separator())
+
+        let quitText = L.t("Quit", lang)
+        let quit = NSMenuItem(title: quitText, action: #selector(NSApplication.terminate(_:)), keyEquivalent: "q")
+        quit.attributedTitle = NSAttributedString(string: quitText, attributes: [.foregroundColor: NSColor.black])
         menu.addItem(quit)
 
         statusItem.menu = menu
+    }
+
+    @objc private func switchLang(_ sender: NSMenuItem) {
+        guard let v = sender.representedObject as? String else { return }
+        lang = v
+        rebuildMenu()
     }
 
     @objc private func toggleColorMode() {

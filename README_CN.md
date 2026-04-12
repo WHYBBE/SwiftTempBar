@@ -16,6 +16,7 @@
 - 可配置刷新间隔，提供预设（1秒 / 2秒 / 3秒 / 5秒 / 10秒 / 30秒）及微调（±1秒）
 - 设置自动持久化，重启后保留
 - 开机自启选项
+- 中英文菜单语言切换（默认英文）
 - 无 Dock 图标，仅驻留菜单栏
 
 ## 系统要求
@@ -25,7 +26,7 @@
 
 ## 实现原理
 
-TempBar 通过 macOS 私有 IOKit/HID API 读取硬件温度传感器：
+SwiftTempBar 通过 macOS 私有 IOKit/HID API 读取硬件温度传感器：
 
 1. **IOHIDEventSystemClientCreate** — 创建 HID 系统客户端
 2. **IOHIDEventSystemClientSetMatching** — 按 `UsagePage=0xFF00, Usage=5` 过滤温度传感器
