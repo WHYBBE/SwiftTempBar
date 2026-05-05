@@ -15,6 +15,9 @@ final class StatusBarController: NSObject, NSApplicationDelegate {
     private var colorMode: Bool {
         didSet { UserDefaults.standard.set(colorMode, forKey: "colorMode") }
     }
+    private var iconStyle: Bool {
+        didSet { UserDefaults.standard.set(iconStyle, forKey: "iconStyle") }
+    }
     private var lang: String {
         didSet { UserDefaults.standard.set(lang, forKey: "lang") }
     }
@@ -25,6 +28,7 @@ final class StatusBarController: NSObject, NSApplicationDelegate {
         self.interval = saved > 0 ? saved : 2
         self.displayMode = ud.string(forKey: "displayMode") == "gpu" ? .gpu : .cpu
         self.colorMode = ud.bool(forKey: "colorMode")
+        self.iconStyle = ud.bool(forKey: "iconStyle")
         self.lang = ud.string(forKey: "lang") ?? "en"
         super.init()
     }
@@ -36,6 +40,7 @@ final class StatusBarController: NSObject, NSApplicationDelegate {
         private static let zh: [String: String] = [
             "Activity Monitor": "活动监视器",
             "Color Mode": "彩色模式",
+            "Icon Prefix": "图标前缀",
             "Launch at Login": "开机自启",
             "Quit": "退出",
             "-1 sec": "-1 秒",
@@ -48,11 +53,15 @@ final class StatusBarController: NSObject, NSApplicationDelegate {
 
     private static func colorForTemp(_ temp: Double) -> NSColor {
         switch temp {
-        case ..<35.0: return NSColor(red: 0.2, green: 0.5, blue: 1.0, alpha: 1)
+        case ..<35.0: return NSColor(red: 0.459, green: 0.808, blue: 0.984, alpha: 1)
         case 35.0..<46.0: return NSColor(red: 0.2, green: 0.8, blue: 0.3, alpha: 1)
         case 46.0..<56.0: return NSColor(red: 1.0, green: 0.6, blue: 0.0, alpha: 1)
         default: return NSColor(red: 1.0, green: 0.25, blue: 0.2, alpha: 1)
         }
+    }
+
+    private static func iconForTemp(_ temp: Double) -> (String, NSColor) {
+        return ("●", colorForTemp(temp))
     }
 
     func applicationDidFinishLaunching(_ notification: Notification) {
@@ -80,7 +89,20 @@ final class StatusBarController: NSObject, NSApplicationDelegate {
             return
         }
         let text = String(format: "%.0f°", t)
-        if colorMode {
+        if iconStyle {
+            let (icon, iconColor) = Self.iconForTemp(t)
+            let attrStr = NSMutableAttributedString()
+            attrStr.append(NSAttributedString(string: icon + " ", attributes: [
+                .font: NSFont.systemFont(ofSize: 10, weight: .regular),
+                .foregroundColor: iconColor,
+                .baselineOffset: 1.5
+            ]))
+            attrStr.append(NSAttributedString(string: text, attributes: [
+                .font: NSFont.monospacedDigitSystemFont(ofSize: 14, weight: .regular),
+                .foregroundColor: colorMode ? Self.colorForTemp(t) : NSColor.controlTextColor
+            ]))
+            statusItem.button?.attributedTitle = attrStr
+        } else if colorMode {
             statusItem.button?.attributedTitle = NSAttributedString(
                 string: text,
                 attributes: [
@@ -125,6 +147,7 @@ final class StatusBarController: NSObject, NSApplicationDelegate {
         menu.addItem(.separator())
 
         menu.addItem(checkItem(L.t("Color Mode", lang), on: colorMode, action: #selector(toggleColorMode)))
+        menu.addItem(checkItem(L.t("Icon Prefix", lang), on: iconStyle, action: #selector(toggleIconStyle)))
         menu.addItem(checkItem(L.t("Launch at Login", lang), on: Self.isLoginItemEnabled, action: #selector(toggleLoginItem)))
         menu.addItem(.separator())
 
@@ -154,6 +177,12 @@ final class StatusBarController: NSObject, NSApplicationDelegate {
 
     @objc private func toggleColorMode() {
         colorMode.toggle()
+        refresh()
+        rebuildMenu()
+    }
+
+    @objc private func toggleIconStyle() {
+        iconStyle.toggle()
         refresh()
         rebuildMenu()
     }
