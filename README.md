@@ -17,6 +17,8 @@ A lightweight macOS menu bar temperature monitor for Apple Silicon (M-series chi
   - Green: 35–45°C (Normal)
   - Orange: 46–55°C (High)
   - Red: ≥ 56°C (Overheating)
+- Icon prefix mode (optional) — colored dot ● before temperature for better visibility
+- One-click open Activity Monitor
 - Configurable refresh interval with presets (1s / 2s / 3s / 5s / 10s / 30s) and fine-tuning (±1s)
 - Settings persistence across restarts
 - Launch at login option
