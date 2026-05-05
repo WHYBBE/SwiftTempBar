@@ -34,6 +34,7 @@ final class StatusBarController: NSObject, NSApplicationDelegate {
             String(format: lang == "zh" ? "%.0f 秒" : "%.0f sec", n)
         }
         private static let zh: [String: String] = [
+            "Activity Monitor": "活动监视器",
             "Color Mode": "彩色模式",
             "Launch at Login": "开机自启",
             "Quit": "退出",
@@ -131,6 +132,12 @@ final class StatusBarController: NSObject, NSApplicationDelegate {
         menu.addItem(checkItem("中文", on: lang == "zh", action: #selector(switchLang(_:)), represented: "zh"))
         menu.addItem(.separator())
 
+        let item = labelItem(L.t("Activity Monitor", lang))
+        item.target = self
+        item.action = #selector(openActivityMonitor)
+        menu.addItem(item)
+        menu.addItem(.separator())
+
         let quitText = L.t("Quit", lang)
         let quit = NSMenuItem(title: quitText, action: #selector(NSApplication.terminate(_:)), keyEquivalent: "q")
         quit.attributedTitle = NSAttributedString(string: quitText, attributes: [.foregroundColor: NSColor.black])
@@ -163,6 +170,11 @@ final class StatusBarController: NSObject, NSApplicationDelegate {
 
     private static var isLoginItemEnabled: Bool {
         SMAppService.mainApp.status == .enabled
+    }
+
+    @objc private func openActivityMonitor() {
+        let url = URL(fileURLWithPath: "/System/Applications/Utilities/Activity Monitor.app")
+        NSWorkspace.shared.open(url)
     }
 
     @objc private func switchMode(_ sender: NSMenuItem) {
