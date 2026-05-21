@@ -82,12 +82,19 @@ final class StatusBarController: NSObject, NSApplicationDelegate {
         if let timer { RunLoop.main.add(timer, forMode: .common) }
     }
 
+    private var lastTemp: Double?
+
     private func refresh() {
         let temp = reader.readTemperature(mode: displayMode)
         guard let t = temp else {
-            statusItem.button?.title = "--°"
+            if lastTemp != nil {
+                statusItem.button?.title = "--°"
+                lastTemp = nil
+            }
             return
         }
+        guard t != lastTemp else { return }
+        lastTemp = t
         let text = String(format: "%.0f°", t)
         if iconStyle {
             let (icon, iconColor) = Self.iconForTemp(t)
