@@ -163,6 +163,13 @@ final class StatusBarController: NSObject, NSApplicationDelegate {
         menu.addItem(checkItem("中文", on: lang == "zh", action: #selector(switchLang(_:)), represented: "zh"))
         menu.addItem(.separator())
 
+        let version = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String
+        let versionText = version.map { "v\($0)" } ?? "development"
+        let versionItem = labelItem(versionText)
+        versionItem.isEnabled = false
+        versionItem.toolTip = Bundle.main.bundleIdentifier
+        menu.addItem(versionItem)
+
         let github = labelItem(L.t("GitHub", lang))
         github.target = self
         github.action = #selector(openGitHub)
