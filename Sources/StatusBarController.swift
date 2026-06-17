@@ -166,6 +166,7 @@ final class StatusBarController: NSObject, NSApplicationDelegate {
         let github = labelItem(L.t("GitHub", lang))
         github.target = self
         github.action = #selector(openGitHub)
+        github.toolTip = "https://github.com/WHYBBE/SwiftTempBar"
         menu.addItem(github)
 
         let item = labelItem(L.t("Activity Monitor", lang))
