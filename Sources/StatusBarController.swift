@@ -40,6 +40,7 @@ final class StatusBarController: NSObject, NSApplicationDelegate {
         private static let zh: [String: String] = [
             "Activity Monitor": "活动监视器",
             "Color Mode": "彩色模式",
+            "GitHub": "GitHub",
             "Icon Prefix": "图标前缀",
             "Launch at Login": "开机自启",
             "Quit": "退出",
@@ -162,6 +163,11 @@ final class StatusBarController: NSObject, NSApplicationDelegate {
         menu.addItem(checkItem("中文", on: lang == "zh", action: #selector(switchLang(_:)), represented: "zh"))
         menu.addItem(.separator())
 
+        let github = labelItem(L.t("GitHub", lang))
+        github.target = self
+        github.action = #selector(openGitHub)
+        menu.addItem(github)
+
         let item = labelItem(L.t("Activity Monitor", lang))
         item.target = self
         item.action = #selector(openActivityMonitor)
@@ -206,6 +212,12 @@ final class StatusBarController: NSObject, NSApplicationDelegate {
 
     private static var isLoginItemEnabled: Bool {
         SMAppService.mainApp.status == .enabled
+    }
+
+    @objc private func openGitHub() {
+        if let url = URL(string: "https://github.com/WHYBBE/SwiftTempBar") {
+            NSWorkspace.shared.open(url)
+        }
     }
 
     @objc private func openActivityMonitor() {
