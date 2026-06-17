@@ -2,9 +2,11 @@ import AppKit
 import ServiceManagement
 
 @main
-final class StatusBarController: NSObject, NSApplicationDelegate {
+final class StatusBarController: NSObject, NSApplicationDelegate, NSMenuDelegate {
     private var statusItem: NSStatusItem!
     private let reader = TemperatureReader()
+    private let fanReader = FanReader()
+    private var fanInfos: [FanReader.FanInfo] = []
     private var timer: Timer?
     private var interval: TimeInterval {
         didSet { UserDefaults.standard.set(interval, forKey: "interval") }
@@ -40,6 +42,7 @@ final class StatusBarController: NSObject, NSApplicationDelegate {
         private static let zh: [String: String] = [
             "Activity Monitor": "活动监视器",
             "Color Mode": "彩色模式",
+            "Fan": "风扇",
             "GitHub": "GitHub",
             "Icon Prefix": "图标前缀",
             "Launch at Login": "开机自启",
@@ -188,6 +191,7 @@ final class StatusBarController: NSObject, NSApplicationDelegate {
         menu.addItem(quit)
 
         statusItem.menu = menu
+        menu.delegate = self
     }
 
     @objc private func switchLang(_ sender: NSMenuItem) {
@@ -226,6 +230,19 @@ final class StatusBarController: NSObject, NSApplicationDelegate {
         if let url = URL(string: "https://github.com/WHYBBE/SwiftTempBar") {
             NSWorkspace.shared.open(url)
         }
+    }
+
+    func menuWillOpen(_ menu: NSMenu) {
+        fanInfos = fanReader.readFans()
+        guard !fanInfos.isEmpty else { return }
+        let fanLabel = lang == "zh" ? "风扇" : "Fan"
+        for (i, fan) in fanInfos.enumerated() {
+            let range = fan.max > 0 ? " (\(fan.min)-\(fan.max) RPM)" : ""
+            let item = labelItem("\(fanLabel) \(i + 1): \(fan.current) RPM\(range)")
+            item.isEnabled = false
+            menu.insertItem(item, at: 0)
+        }
+        menu.insertItem(.separator(), at: fanInfos.count)
     }
 
     @objc private func openActivityMonitor() {

@@ -11,6 +11,7 @@
 	006000000000000000000005 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00400000000000000000000A /* Cocoa.framework */; };
 	006000000000000000000006 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00400000000000000000000B /* IOKit.framework */; };
 	006000000000000000000007 /* TemperatureReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00400000000000000000000C /* TemperatureReader.swift */; };
+	006000000000000000000009 /* FanReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00400000000000000000000E /* FanReader.swift */; };
 	006000000000000000000008 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 00400000000000000000000D /* Assets.xcassets */; };
 /* End PBXBuildFile section */
 
@@ -18,6 +19,7 @@
 	004000000000000000000001 /* StatusBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusBarController.swift; sourceTree = "<group>"; };
 	004000000000000000000007 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 	00400000000000000000000C /* TemperatureReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemperatureReader.swift; sourceTree = "<group>"; };
+	00400000000000000000000E /* FanReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FanReader.swift; sourceTree = "<group>"; };
 	00400000000000000000000D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 	004000000000000000000009 /* SwiftTempBar.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; path = SwiftTempBar.app; sourceTree = BUILT_PRODUCTS_DIR; };
 	00400000000000000000000A /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
@@ -59,6 +61,7 @@
 		children = (
 			004000000000000000000001 /* StatusBarController.swift */,
 			00400000000000000000000C /* TemperatureReader.swift */,
+			00400000000000000000000E /* FanReader.swift */,
 			004000000000000000000007 /* Info.plist */,
 			00400000000000000000000D /* Assets.xcassets */,
 		);
@@ -135,6 +138,7 @@
 		files = (
 			006000000000000000000001 /* StatusBarController.swift in Sources */,
 			006000000000000000000007 /* TemperatureReader.swift in Sources */,
+			006000000000000000000009 /* FanReader.swift in Sources */,
 		);
 		runOnlyForDeploymentPostprocessing = 0;
 	};
