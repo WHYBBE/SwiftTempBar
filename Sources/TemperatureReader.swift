@@ -51,7 +51,7 @@ private enum HIDAPI {
 
     typealias CreateFunc = @convention(c) (CFAllocator?) -> UnsafeMutableRawPointer?
     typealias SetMatchingFunc = @convention(c) (UnsafeMutableRawPointer, CFDictionary) -> Int32
-    typealias CopyServicesFunc = @convention(c) (UnsafeMutableRawPointer) -> CFArray?
+    typealias CopyServicesFunc = @convention(c) (UnsafeMutableRawPointer) -> Unmanaged<CFArray>?
     typealias CopyPropertyFunc = @convention(c) (UnsafeMutableRawPointer, CFString) -> Unmanaged<AnyObject>?
     typealias CopyEventFunc = @convention(c) (UnsafeMutableRawPointer, Int64, Int32, Int64) -> UnsafeMutableRawPointer?
     typealias GetFloatValueFunc = @convention(c) (UnsafeMutableRawPointer, Int32) -> Double
@@ -100,7 +100,7 @@ private extension TemperatureReader {
         // 传感器热插拔后读不到数据。每次重建更安全，单次开销可接受。
         guard let system = create(kCFAllocatorDefault) else { return [] }
         _ = setMatching(system, thermalMatchingDict)
-        guard let services = copyServices(system) else { rawRelease(system); return [] }
+        guard let services = copyServices(system)?.takeRetainedValue() else { rawRelease(system); return [] }
 
         var sensors: [ThermalSensor] = []
         let count = CFArrayGetCount(services)
