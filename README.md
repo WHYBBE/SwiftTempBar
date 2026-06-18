@@ -22,7 +22,7 @@ A lightweight macOS menu bar temperature monitor for Apple Silicon (M-series chi
 - One-click open Activity Monitor
 - One-click open GitHub repository
 - Version label in menu
-- Configurable refresh interval with presets (1s / 2s / 3s / 5s / 10s / 30s) and fine-tuning (±1s)
+- Configurable refresh interval with presets (1s / 2s / 3s / 5s / 10s / 15s / 30s / 45s / 60s) and fine-tuning (±1s)
 - Settings persistence across restarts
 - Launch at login option
 - English / Chinese menu language switch (defaults to English)
