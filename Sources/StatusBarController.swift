@@ -83,10 +83,11 @@ final class StatusBarController: NSObject, NSApplicationDelegate, NSMenuDelegate
 
     private func scheduleTimer() {
         timer?.invalidate()
-        timer = Timer.scheduledTimer(withTimeInterval: interval, repeats: true) { [weak self] _ in
+        let t = Timer(timeInterval: interval, repeats: true) { [weak self] _ in
             self?.refresh()
         }
-        if let timer { RunLoop.main.add(timer, forMode: .common) }
+        RunLoop.main.add(t, forMode: .common)
+        timer = t
     }
 
     private var lastTemp: Double?
