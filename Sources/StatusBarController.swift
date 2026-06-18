@@ -6,7 +6,6 @@ final class StatusBarController: NSObject, NSApplicationDelegate, NSMenuDelegate
     private var statusItem: NSStatusItem!
     private let reader = TemperatureReader()
     private let fanReader = FanReader()
-    private var fanInfos: [FanReader.FanInfo] = []
     private static let fanTag = 999
     private var timer: Timer?
     private var interval: TimeInterval {
@@ -251,7 +250,7 @@ final class StatusBarController: NSObject, NSApplicationDelegate, NSMenuDelegate
             menu.removeItem(item)
         }
 
-        fanInfos = fanReader.readFans()
+        let fanInfos = fanReader.readFans()
         let fanLabel = L.t("Fan", lang)
         let noFanText = L.t("No Fan", lang)
 
