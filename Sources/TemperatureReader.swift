@@ -22,13 +22,6 @@ final class TemperatureReader {
 enum DisplayMode {
     case cpu
     case gpu
-
-    var label: String {
-        switch self {
-        case .cpu: return "CPU"
-        case .gpu: return "GPU"
-        }
-    }
 }
 
 private extension TemperatureReader {
