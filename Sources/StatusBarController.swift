@@ -316,7 +316,7 @@ final class StatusBarController: NSObject, NSApplicationDelegate, NSMenuDelegate
     }
 
     @objc private func increaseInterval() {
-        interval += 1
+        interval = min(interval + 1, 3600)
         scheduleTimer()
         rebuildMenu()
     }
