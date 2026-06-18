@@ -91,6 +91,8 @@ final class StatusBarController: NSObject, NSApplicationDelegate, NSMenuDelegate
 
     private var lastTemp: Double?
 
+    // 温度读取在主线程同步执行：单次 HID 调用很快（<1ms），实测无卡顿。
+    // 若未来传感器增多导致延迟，可考虑移至后台队列 + 回主线程更新 UI。
     private func refresh() {
         let temp = reader.readTemperature(mode: displayMode)
         guard let t = temp else {
@@ -320,6 +322,8 @@ final class StatusBarController: NSObject, NSApplicationDelegate, NSMenuDelegate
         rebuildMenu()
     }
 
+    // 手写 main() 而非仅用 @main 合成：需要在 app.run() 前设置 delegate，
+    // @main 合成的入口无法插入这步，因此保留手写入口。
     static func main() {
         let app = NSApplication.shared
         let delegate = StatusBarController()

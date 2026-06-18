@@ -96,6 +96,8 @@ private extension TemperatureReader {
               let getFloatValue = HIDAPI.getFloatValue
         else { return [] }
 
+        // 不缓存 HID 客户端：私有 API 行为不确定，缓存 system/services 可能导致
+        // 传感器热插拔后读不到数据。每次重建更安全，单次开销可接受。
         guard let system = create(kCFAllocatorDefault) else { return [] }
         _ = setMatching(system, thermalMatchingDict)
         guard let services = copyServices(system) else { rawRelease(system); return [] }
