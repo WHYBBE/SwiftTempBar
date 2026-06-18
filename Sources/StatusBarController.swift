@@ -7,6 +7,7 @@ final class StatusBarController: NSObject, NSApplicationDelegate, NSMenuDelegate
     private let reader = TemperatureReader()
     private let fanReader = FanReader()
     private var fanInfos: [FanReader.FanInfo] = []
+    private static let fanTag = 999
     private var timer: Timer?
     private var interval: TimeInterval {
         didSet { UserDefaults.standard.set(interval, forKey: "interval") }
@@ -43,6 +44,7 @@ final class StatusBarController: NSObject, NSApplicationDelegate, NSMenuDelegate
             "Activity Monitor": "活动监视器",
             "Color Mode": "彩色模式",
             "Fan": "风扇",
+            "No Fan": "无风扇",
             "GitHub": "GitHub",
             "Icon Prefix": "图标前缀",
             "Launch at Login": "开机自启",
@@ -233,16 +235,34 @@ final class StatusBarController: NSObject, NSApplicationDelegate, NSMenuDelegate
     }
 
     func menuWillOpen(_ menu: NSMenu) {
-        fanInfos = fanReader.readFans()
-        guard !fanInfos.isEmpty else { return }
-        let fanLabel = lang == "zh" ? "风扇" : "Fan"
-        for (i, fan) in fanInfos.enumerated() {
-            let range = fan.max > 0 ? " (\(fan.min)-\(fan.max) RPM)" : ""
-            let item = labelItem("\(fanLabel) \(i + 1): \(fan.current) RPM\(range)")
-            item.isEnabled = false
-            menu.insertItem(item, at: 0)
+        while let item = menu.item(withTag: Self.fanTag) {
+            menu.removeItem(item)
         }
-        menu.insertItem(.separator(), at: fanInfos.count)
+
+        fanInfos = fanReader.readFans()
+        let fanLabel = L.t("Fan", lang)
+        let noFanText = L.t("No Fan", lang)
+
+        if fanInfos.isEmpty {
+            let item = labelItem(noFanText)
+            item.isEnabled = false
+            item.tag = Self.fanTag
+            menu.insertItem(item, at: 0)
+            let sep = NSMenuItem.separator()
+            sep.tag = Self.fanTag
+            menu.insertItem(sep, at: 1)
+        } else {
+            for (i, fan) in fanInfos.enumerated() {
+                let range = fan.max > 0 ? " (\(fan.min)-\(fan.max) RPM)" : ""
+                let item = labelItem("\(fanLabel) \(i + 1): \(fan.current) RPM\(range)")
+                item.isEnabled = false
+                item.tag = Self.fanTag
+                menu.insertItem(item, at: i)
+            }
+            let sep = NSMenuItem.separator()
+            sep.tag = Self.fanTag
+            menu.insertItem(sep, at: fanInfos.count)
+        }
     }
 
     @objc private func openActivityMonitor() {
