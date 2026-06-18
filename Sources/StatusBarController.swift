@@ -253,15 +253,28 @@ final class StatusBarController: NSObject, NSApplicationDelegate, NSMenuDelegate
             menu.insertItem(sep, at: 1)
         } else {
             for (i, fan) in fanInfos.enumerated() {
-                let range = fan.max > 0 ? " (\(fan.min)-\(fan.max) RPM)" : ""
-                let item = labelItem("\(fanLabel) \(i + 1): \(fan.current) RPM\(range)")
-                item.isEnabled = false
-                item.tag = Self.fanTag
-                menu.insertItem(item, at: i)
+                let mainItem = NSMenuItem()
+                mainItem.attributedTitle = NSAttributedString(string: "\(fanLabel) \(i + 1): \(fan.current) RPM", attributes: [
+                    .foregroundColor: NSColor.black,
+                    .font: NSFont.systemFont(ofSize: 13)
+                ])
+                mainItem.isEnabled = false
+                mainItem.tag = Self.fanTag
+                menu.insertItem(mainItem, at: i * 2)
+
+                let rangeItem = NSMenuItem()
+                let rangeText = fan.max > 0 ? "\(fan.min) - \(fan.max) RPM" : ""
+                rangeItem.attributedTitle = NSAttributedString(string: rangeText, attributes: [
+                    .foregroundColor: NSColor.gray,
+                    .font: NSFont.systemFont(ofSize: 11)
+                ])
+                rangeItem.isEnabled = false
+                rangeItem.tag = Self.fanTag
+                menu.insertItem(rangeItem, at: i * 2 + 1)
             }
             let sep = NSMenuItem.separator()
             sep.tag = Self.fanTag
-            menu.insertItem(sep, at: fanInfos.count)
+            menu.insertItem(sep, at: fanInfos.count * 2)
         }
     }
 
