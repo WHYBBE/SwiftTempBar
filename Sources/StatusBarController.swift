@@ -131,7 +131,7 @@ final class StatusBarController: NSObject, NSApplicationDelegate, NSMenuDelegate
 
     private func labelItem(_ title: String) -> NSMenuItem {
         let item = NSMenuItem()
-        item.attributedTitle = NSAttributedString(string: title, attributes: [.foregroundColor: NSColor.black])
+        item.attributedTitle = NSAttributedString(string: title, attributes: [.foregroundColor: NSColor.labelColor])
         return item
     }
 
@@ -139,7 +139,7 @@ final class StatusBarController: NSObject, NSApplicationDelegate, NSMenuDelegate
         let item = NSMenuItem(title: title, action: action, keyEquivalent: "")
         item.target = self
         item.state = on ? .on : .off
-        item.attributedTitle = NSAttributedString(string: title, attributes: [.foregroundColor: NSColor.black])
+        item.attributedTitle = NSAttributedString(string: title, attributes: [.foregroundColor: NSColor.labelColor])
         if let represented { item.representedObject = represented }
         return item
     }
@@ -154,7 +154,7 @@ final class StatusBarController: NSObject, NSApplicationDelegate, NSMenuDelegate
 
         let intervalTitle = "\(L.t("Interval", lang)): \(L.sec(interval, lang))"
         let intervalItem = NSMenuItem(title: intervalTitle, action: nil, keyEquivalent: "")
-        intervalItem.attributedTitle = NSAttributedString(string: intervalTitle, attributes: [.foregroundColor: NSColor.black])
+        intervalItem.attributedTitle = NSAttributedString(string: intervalTitle, attributes: [.foregroundColor: NSColor.labelColor])
         let submenu = NSMenu()
         submenu.autoenablesItems = false
         for s in [1, 2, 3, 5, 10, 15, 30, 45, 60] as [TimeInterval] {
@@ -200,7 +200,7 @@ final class StatusBarController: NSObject, NSApplicationDelegate, NSMenuDelegate
 
         let quitText = L.t("Quit", lang)
         let quit = NSMenuItem(title: quitText, action: #selector(NSApplication.terminate(_:)), keyEquivalent: "q")
-        quit.attributedTitle = NSAttributedString(string: quitText, attributes: [.foregroundColor: NSColor.black])
+        quit.attributedTitle = NSAttributedString(string: quitText, attributes: [.foregroundColor: NSColor.labelColor])
         menu.addItem(quit)
 
         statusItem.menu = menu
@@ -266,7 +266,7 @@ final class StatusBarController: NSObject, NSApplicationDelegate, NSMenuDelegate
             for (i, fan) in fanInfos.enumerated() {
                 let mainItem = NSMenuItem()
                 mainItem.attributedTitle = NSAttributedString(string: "\(fanLabel) \(i + 1): \(fan.current) RPM", attributes: [
-                    .foregroundColor: NSColor.black,
+                    .foregroundColor: NSColor.labelColor,
                     .font: NSFont.systemFont(ofSize: 13)
                 ])
                 mainItem.isEnabled = false
@@ -276,7 +276,7 @@ final class StatusBarController: NSObject, NSApplicationDelegate, NSMenuDelegate
                 let rangeItem = NSMenuItem()
                 let rangeText = fan.max > 0 ? "\(fan.min) - \(fan.max) RPM" : ""
                 rangeItem.attributedTitle = NSAttributedString(string: rangeText, attributes: [
-                    .foregroundColor: NSColor.gray,
+                    .foregroundColor: NSColor.secondaryLabelColor,
                     .font: NSFont.systemFont(ofSize: 11)
                 ])
                 rangeItem.isEnabled = false
