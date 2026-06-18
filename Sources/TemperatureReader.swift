@@ -118,7 +118,6 @@ private extension TemperatureReader {
             }
             sensors.append(ThermalSensor(name: name, value: value))
         }
-        rawRelease(Unmanaged.passUnretained(services).toOpaque())
         rawRelease(system)
         return sensors
     }
