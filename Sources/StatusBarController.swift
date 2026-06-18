@@ -47,6 +47,7 @@ final class StatusBarController: NSObject, NSApplicationDelegate, NSMenuDelegate
             "No Fan": "无风扇",
             "GitHub": "GitHub",
             "Icon Prefix": "图标前缀",
+            "Interval": "刷新间隔",
             "Launch at Login": "开机自启",
             "Quit": "退出",
             "-1 sec": "-1 秒",
@@ -151,12 +152,22 @@ final class StatusBarController: NSObject, NSApplicationDelegate, NSMenuDelegate
         menu.addItem(checkItem("GPU", on: displayMode == .gpu, action: #selector(switchMode(_:)), represented: "gpu"))
         menu.addItem(.separator())
 
-        for s in [1, 2, 3, 5, 10, 30] as [TimeInterval] {
-            menu.addItem(checkItem(L.sec(s, lang), on: interval == s, action: #selector(setInterval(_:)), represented: NSNumber(value: s)))
+        let intervalTitle = "\(L.t("Interval", lang)): \(L.sec(interval, lang))"
+        let intervalItem = NSMenuItem(title: intervalTitle, action: nil, keyEquivalent: "")
+        intervalItem.attributedTitle = NSAttributedString(string: intervalTitle, attributes: [.foregroundColor: NSColor.black])
+        let submenu = NSMenu()
+        submenu.autoenablesItems = false
+        for s in [1, 2, 3, 5, 10, 15, 30, 45, 60] as [TimeInterval] {
+            submenu.addItem(checkItem(L.sec(s, lang), on: interval == s, action: #selector(setInterval(_:)), represented: NSNumber(value: s)))
         }
+        let dec = labelItem(L.t("-1 sec", lang)); dec.target = self; dec.action = #selector(decreaseInterval)
+        let inc = labelItem(L.t("+1 sec", lang)); inc.target = self; inc.action = #selector(increaseInterval)
+        submenu.addItem(.separator())
+        submenu.addItem(dec)
+        submenu.addItem(inc)
+        intervalItem.submenu = submenu
+        menu.addItem(intervalItem)
 
-        let dec = labelItem(L.t("-1 sec", lang)); dec.target = self; dec.action = #selector(decreaseInterval); menu.addItem(dec)
-        let inc = labelItem(L.t("+1 sec", lang)); inc.target = self; inc.action = #selector(increaseInterval); menu.addItem(inc)
         menu.addItem(.separator())
 
         menu.addItem(checkItem(L.t("Color Mode", lang), on: colorMode, action: #selector(toggleColorMode)))
